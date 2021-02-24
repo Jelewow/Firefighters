@@ -29,19 +29,21 @@ public class PlayerInputHandler : MonoBehaviour
         _input.Main.Shoot.canceled -= EndShooting;
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
-        var rotate = _input.Main.Rotate.ReadValue<Vector2>();
-        _cameraRotation.Rotate(rotate);
+        var scaledVector = _input.Main.Rotate.ReadValue<Vector2>() * Time.fixedDeltaTime;
+        _cameraRotation.Rotate(scaledVector);
     }
 
     private void StartShooting(InputAction.CallbackContext context)
     {
-        _waterShooter.Shoot();
+        if(_waterShooter.enabled == true)
+            _waterShooter.Shoot();
     }
 
     private void EndShooting(InputAction.CallbackContext context)
     {
-        _waterShooter.StopShoot();
+        if(_waterShooter.enabled == true)
+            _waterShooter.StopShoot();
     }
 }

@@ -1,19 +1,41 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class CameraRotation : MonoBehaviour
 {
     [SerializeField] private float _rotateSpeed;
 
-    private float _xBorder = 25;
-    private float _yBorder = 40;
-    
-    public void Rotate(Vector2 rotation)
+    private Vector3 _previousRotation;
+    private Quaternion _center;
+
+    private void Start()
     {
-        var scaledRotateSpeed = _rotateSpeed * Time.deltaTime;
-        var y = Mathf.Clamp(rotation.x, -20, 20);
-        var x = Mathf.Clamp(rotation.y, -10f, 10f);
-        var direction = new Vector3(x, y);
-        transform.rotation = Quaternion.Euler(direction);
-        //print(transform.localEulerAngles);
+        _center = transform.rotation;
+    }
+
+    public void Rotate(Vector2 scaledVector)
+    {
+        var scaledRotationSpeed = scaledVector * _rotateSpeed;
+        var x = CalculateAngle(scaledRotationSpeed.x, Vector2.up);
+        var y = CalculateAngle(scaledRotationSpeed.y, Vector2.right);
+        var clampAngles = ClampAngles(x, y).eulerAngles;
+        clampAngles.z = 0;
+        transform.localEulerAngles = clampAngles;
+    }
+
+    private Quaternion ClampAngles(Quaternion x, Quaternion y)
+    {
+        var resultantAngle = transform.localRotation * x * y;
+        if (Quaternion.Angle(_center, resultantAngle) <= 40)
+        {
+            return resultantAngle;
+        }
+
+        return transform.localRotation;
+    }
+
+    private Quaternion CalculateAngle(float axis, Vector2 direction)
+    {
+        return Quaternion.AngleAxis(axis, direction);
     }
 }
