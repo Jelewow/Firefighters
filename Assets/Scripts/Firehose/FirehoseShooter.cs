@@ -2,7 +2,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(WaterLevel))]
-public class WaterShooter : MonoBehaviour
+public class FirehoseShooter : MonoBehaviour
 {
     [SerializeField] private ParticleSystem _mainParticle;
 

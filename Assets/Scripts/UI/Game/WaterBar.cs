@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class Bar : MonoBehaviour
+public class WaterBar : MonoBehaviour
 {
     [SerializeField] private Slider _slider;
     [SerializeField] private WaterLevel _waterLevel;

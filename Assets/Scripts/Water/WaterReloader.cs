@@ -1,16 +1,16 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(WaterShooter))]
-public class ShooterState : MonoBehaviour
+[RequireComponent(typeof(WaterLevel))]
+public class WaterReloader : MonoBehaviour
 {
-    [SerializeField] private WaterLevel _waterLevel;
-    
-    private WaterShooter _shooter;
+    private WaterLevel _waterLevel;
 
     private void Awake()
     {
-        _shooter = GetComponent<WaterShooter>();
+        _waterLevel = GetComponent<WaterLevel>();
     }
 
     private void OnEnable()
@@ -25,7 +25,6 @@ public class ShooterState : MonoBehaviour
 
     private void OnWaterEnded()
     {
-        _shooter.StopShoot();
-        _shooter.enabled = false;
+        
     }
 }

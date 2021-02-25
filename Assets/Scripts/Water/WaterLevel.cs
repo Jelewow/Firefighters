@@ -15,6 +15,7 @@ public class WaterLevel : MonoBehaviour
     public event Action<float> SetMaxValue;
     public event Action<float> ValueChanged;
     public event Action WaterEnded;
+    public event Action WaterFulled;
 
     private void Start()
     {
@@ -34,6 +35,11 @@ public class WaterLevel : MonoBehaviour
             StopCoroutine(_consumpting);
     }
 
+    private void ReloadWater()
+    {
+        StartCoroutine(Reloading());
+    }
+
     private IEnumerator Consumpting()
     {
         while (_waterLevel > 0)
@@ -44,6 +50,22 @@ public class WaterLevel : MonoBehaviour
             if (_waterLevel == 0)
             {
                 WaterEnded?.Invoke();
+                ReloadWater();
+            }
+            yield return _delay;
+        }
+    }
+
+    private IEnumerator Reloading()
+    {
+        while (_waterLevel < _maxValue)
+        {
+            _waterLevel += _waterConsumption;
+            _waterLevel = Mathf.Clamp(_waterLevel, 0, _maxValue);
+            ValueChanged?.Invoke(_waterLevel);
+            if (_waterLevel == _maxValue)
+            {
+                WaterFulled?.Invoke();
             }
             yield return _delay;
         }

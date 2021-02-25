@@ -296,7 +296,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _waterLevel: 1000
-  _waterConsumption: 1
+  _waterConsumption: 5
   _delayBetweenConsumption: 0
 --- !u!114 &391645588
 MonoBehaviour:
