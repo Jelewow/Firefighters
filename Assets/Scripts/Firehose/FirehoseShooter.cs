@@ -4,9 +4,11 @@ using UnityEngine;
 [RequireComponent(typeof(WaterLevel))]
 public class FirehoseShooter : MonoBehaviour
 {
-    [SerializeField] private ParticleSystem _mainParticle;
+    [SerializeField] private ParticleSystem _waterParticle;
 
     private WaterLevel _waterLevel;
+
+    public ParticleSystem WaterParticle => _waterParticle;
 
     private void Awake()
     {
@@ -16,7 +18,7 @@ public class FirehoseShooter : MonoBehaviour
     public void Shoot()
     {
         TryStartVFX();
-        var emission = _mainParticle.emission;
+        var emission = _waterParticle.emission;
         emission.enabled = true;
         
         _waterLevel.StartConsumpting();
@@ -24,7 +26,7 @@ public class FirehoseShooter : MonoBehaviour
 
     public void StopShoot()
     {
-        var emission = _mainParticle.emission;
+        var emission = _waterParticle.emission;
         emission.enabled = false;
         
         _waterLevel.StopConsumpting();
@@ -32,7 +34,7 @@ public class FirehoseShooter : MonoBehaviour
 
     private void TryStartVFX()
     {
-        if (_mainParticle.isPlaying == false)
-            _mainParticle.Play();
+        if (_waterParticle.isPlaying == false)
+            _waterParticle.Play();
     }
 }
