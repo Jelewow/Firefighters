@@ -27,6 +27,7 @@ public class PlayerInputHandler : MonoBehaviour
     {
         _input.Main.Shoot.started -= StartShooting;
         _input.Main.Shoot.canceled -= EndShooting;
+        EndShooting();
     }
 
     private void FixedUpdate()
@@ -41,7 +42,7 @@ public class PlayerInputHandler : MonoBehaviour
             _firehoseShooter.Shoot();
     }
 
-    private void EndShooting(InputAction.CallbackContext context)
+    private void EndShooting(InputAction.CallbackContext context = default)
     {
         if(_firehoseShooter.enabled == true)
             _firehoseShooter.StopShoot();

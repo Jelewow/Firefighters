@@ -22,6 +22,7 @@ public class WaterLevel : MonoBehaviour
         _delay = new WaitForSeconds(_delayBetweenConsumption);
         _maxValue = _waterLevel;
         SetMaxValue?.Invoke(_maxValue);
+        ValueChanged?.Invoke(_maxValue);
     }
     
     public void StartConsumpting()
@@ -69,5 +70,10 @@ public class WaterLevel : MonoBehaviour
             }
             yield return _delay;
         }
+    }
+
+    private void ChangeWaterLevel()
+    {
+        
     }
 }
