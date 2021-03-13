@@ -37,7 +37,7 @@ public class FireCounter : MonoBehaviour
     private void OnFireSpawned()
     {
         _fireAmount++;
-        FireAdded?.Invoke();;
+        FireAdded?.Invoke();
     }
 
     private void OnFireExtinguished()

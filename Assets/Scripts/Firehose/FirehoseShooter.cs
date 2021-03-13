@@ -1,17 +1,20 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(WaterLevel))]
 public class FirehoseShooter : MonoBehaviour
 {
     [SerializeField] private ParticleSystem _waterParticle;
+    [SerializeField] private AudioSource _audioSource;
 
     private WaterLevel _waterLevel;
-
-    public ParticleSystem WaterParticle => _waterParticle;
+    private Coroutine _volumeUp;
+    private Coroutine _volumeDown;
 
     private void Awake()
     {
+        _audioSource.volume = 0.3f;
         _waterLevel = GetComponent<WaterLevel>();
     }
 
@@ -20,7 +23,15 @@ public class FirehoseShooter : MonoBehaviour
         TryStartVFX();
         var emission = _waterParticle.emission;
         emission.enabled = true;
-        
+
+        if (_audioSource.isPlaying == false)
+        {
+            _audioSource.Play();
+            _volumeUp = StartCoroutine(AddVolume());
+            if(_volumeDown != null)
+                StopCoroutine(_volumeDown);
+        }
+
         _waterLevel.StartConsumpting();
     }
 
@@ -28,7 +39,12 @@ public class FirehoseShooter : MonoBehaviour
     {
         var emission = _waterParticle.emission;
         emission.enabled = false;
-        
+
+        _audioSource.Stop();
+        if(_volumeUp != null)
+            StopCoroutine(_volumeUp);
+        _volumeDown = StartCoroutine(ReduceVolume());
+
         _waterLevel.StopConsumpting();
     }
 
@@ -36,5 +52,23 @@ public class FirehoseShooter : MonoBehaviour
     {
         if (_waterParticle.isPlaying == false)
             _waterParticle.Play();
+    }
+
+    private IEnumerator AddVolume()
+    {
+        while (_audioSource.volume != 1)
+        {
+            _audioSource.volume += 0.001f;
+            yield return null;
+        }
+    }
+
+    private IEnumerator ReduceVolume()
+    {
+        while (_audioSource.volume >= 0.3f)
+        {
+            _audioSource.volume -= 0.01f;
+            yield return null;
+        }
     }
 }
